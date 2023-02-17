@@ -26,35 +26,34 @@ namespace SchoolEnglish
         public ListService()
         {
             InitializeComponent();
-            LService.ItemsSource = DataBaseClass.SEBase.Service.ToList();
-            cbPrice.SelectedIndex = 0;
-            cbFilter.SelectedIndex = 0;
+            LVService.ItemsSource = DataBaseClass.SEBase.Service.ToList();
+            cb_Price.SelectedIndex = 0;
+            cb_Filter.SelectedIndex = 0;
 
             Filter();
         }
-
-        void Filter() 
+        void Filter()
         {
             listFilter = DataBaseClass.SEBase.Service.ToList();
-            if (!string.IsNullOrWhiteSpace(tbSearch.Text))  
+            if (!string.IsNullOrWhiteSpace(tb_Search.Text)) 
             {
-                listFilter = listFilter.Where(x => x.Title.ToLower().Contains(tbSearch.Text.ToLower())).ToList(); 
+                listFilter = listFilter.Where(x => x.Title.ToLower().Contains(tb_Search.Text.ToLower())).ToList(); 
             }
-            if (!string.IsNullOrWhiteSpace(tbSearchDescribe.Text))  
+            if (!string.IsNullOrWhiteSpace(tb_SearchDescribe.Text))  
             {
                 List<Service> des = listFilter.Where(x => x.Description != null).ToList();
                 if (des.Count > 0)
                 {
-                    listFilter = des.Where(x => x.Description.ToLower().Contains(tbSearchDescribe.Text.ToLower())).ToList();
+                    listFilter = des.Where(x => x.Description.ToLower().Contains(tb_SearchDescribe.Text.ToLower())).ToList();
                 }
                 else
                 {
-                    MessageBox.Show("Описание отстутствует");
+                    MessageBox.Show("Нет описания");
                 }
             }
 
-           
-            switch (cbPrice.SelectedIndex)
+            
+            switch (cb_Price.SelectedIndex)
             {
                 case 1:
                     listFilter.Sort((x, y) => x.Cost.CompareTo(y.Cost));
@@ -66,7 +65,7 @@ namespace SchoolEnglish
             }
 
             //фильтр
-            switch (cbFilter.SelectedIndex)
+            switch (cb_Filter.SelectedIndex)
             {
                 case 1:
                     listFilter = listFilter.Where(z => z.Discount >= 0 && z.Discount < 0.05).ToList();
@@ -84,24 +83,92 @@ namespace SchoolEnglish
                     listFilter = listFilter.Where(z => z.Discount >= 0.70 && z.Discount < 1).ToList();
                     break;
             }
-            CountZapis.Text = listFilter.Count.ToString() + " из " + DataBaseClass.SEBase.Service.ToList().Count.ToString(); 
+            tb_CountZapis.Text = listFilter.Count.ToString() + " из " + DataBaseClass.SEBase.Service.ToList().Count.ToString(); //количество записей
 
-            LService.ItemsSource = listFilter;
+            LVService.ItemsSource = listFilter;
             if (listFilter.Count == 0)
             {
                 MessageBox.Show("нет записей");
             }
         }
+        private void cb_Price_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Filter();
+        }
 
-        //private void btnUpdate_Click(object sender, RoutedEventArgs e) 
-        //{
-        //    Button btn = (Button)sender;
-        //    int index = Convert.ToInt32(btn.Uid);
-        //    Service service = DataBaseClass.SEBase.Service.FirstOrDefault(z => z.ID == index);
-        //    ClassFrame.MainFrame.Navigate(new AddService(service));
-        //}
+        private void cb_Filter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Filter();
+        }
 
-        private void btnDelete_Click(object sender, RoutedEventArgs e) 
+        private void tb_Search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Filter();
+        }
+
+        private void tb_SearchDescribe_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Filter();
+        }
+
+        private void tb_OldPrice_Loaded(object sender, RoutedEventArgs e)
+        {
+            TextBlock tb = (TextBlock)sender;
+            if (tb.Uid != null)
+            {
+                tb.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                tb.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void tb_Discount_Loaded(object sender, RoutedEventArgs e)
+        {
+            TextBlock tb = (TextBlock)sender;
+            if (tb.Uid != null)
+            {
+                tb.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                tb.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void bt_Update_Loaded(object sender, RoutedEventArgs e)
+        {
+            Button btnUpdate = sender as Button;
+            if (code == "0000")
+            {
+                btnUpdate.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                btnUpdate.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void bt_Update_Click(object sender, RoutedEventArgs e)
+        {
+           
+        }
+
+        private void bt_Delete_Loaded(object sender, RoutedEventArgs e)
+        {
+            Button btnDelete = sender as Button;
+            if (code == "0000")
+            {
+                btnDelete.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                btnDelete.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void bt_Delete_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -122,7 +189,7 @@ namespace SchoolEnglish
                         DataBaseClass.SEBase.Service.Remove(service);
                         DataBaseClass.SEBase.SaveChanges();
                         MessageBox.Show("Успешное удаление!");
-                        //ClassFrame.MainFrame.Navigate(new Pages.ListOfService());
+                        ClassFrame.fr.Navigate(new ListService());
                     }
                 }
                 else
@@ -136,121 +203,25 @@ namespace SchoolEnglish
             }
         }
 
-        private void cbPrice_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void bt_Reg_Loaded(object sender, RoutedEventArgs e)
         {
-            Filter();
-        }
-
-        private void cbFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Filter();
-        }
-
-        private void tbSearchDes_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            Filter();
-        }
-
-        private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            Filter();
-        }
-
-        private void tbSkidka_Loaded(object sender, RoutedEventArgs e)
-        {
-            TextBlock tb = (TextBlock)sender;
-            if (tb.Uid != null)
-            {
-                tb.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                tb.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void tbOldPrice_Loaded(object sender, RoutedEventArgs e)
-        {
-            TextBlock tb = (TextBlock)sender;
-            if (tb.Uid != null)
-            {
-                tb.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                tb.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void Add_Click(object sender, RoutedEventArgs e) //переход на добавление услуги
-        {
-
-            ClassFrame.MainFrame.Navigate(new AddService());
-        }
-
-        private void btnUpdate_Loaded(object sender, RoutedEventArgs e)
-        {
-            Button btnUp = sender as Button;
+            Button btnReg = sender as Button;
             if (code == "0000")
             {
-                btnUp.Visibility = Visibility.Visible;
+                btnReg.Visibility = Visibility.Visible;
             }
             else
             {
-                btnUp.Visibility = Visibility.Collapsed;
+                btnReg.Visibility = Visibility.Collapsed;
             }
         }
 
-        private void btnDelete_Loaded(object sender, RoutedEventArgs e)
+        private void bt_Reg_Click(object sender, RoutedEventArgs e)
         {
-            Button btn = sender as Button;
-            if (code == "0000")
-            {
-                btn.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                btn.Visibility = Visibility.Collapsed;
-            }
+            ClassFrame.fr.Navigate(new UpcomingEntries());
         }
 
-        //private void btnZapis_Click(object sender, RoutedEventArgs e) //переход на окно запись на услугу
-        //{
-        //    Button btn = (Button)sender;
-        //    int index = Convert.ToInt32(btn.Uid);
-        //    Service service = DataBaseClass.SEBase.Service.FirstOrDefault(z => z.ID == index);
-
-        //    WindowSigningUp windowSigning = new WindowSigningUp(service);
-        //    windowSigning.ShowDialog();
-        //    ClassFrame.MainFrame.Navigate(new ListService());
-        //}
-
-        private void btnZapis_Loaded(object sender, RoutedEventArgs e)
-        {
-            Button btn = sender as Button;
-            if (code == "0000")
-            {
-                btn.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                btn.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void btnZap_Click(object sender, RoutedEventArgs e) //переход на ближайшие записи
-        {
-            ClassFrame.MainFrame.Navigate(new UpcomingEntries());
-        }
-
-        //private void btnAdmin_Click(object sender, RoutedEventArgs e)
-        //{
-        //    WindowsAdmin windowsAdmin = new WindowsAdmin();
-        //    windowsAdmin.ShowDialog();
-        //    ClassFrame.frameL.Navigate(new Pages.ListOfService());
-        //}
-
-        private void btnAdmin_Loaded(object sender, RoutedEventArgs e)
+        private void btn_Admin_Loaded(object sender, RoutedEventArgs e)
         {
             Button btnAdmin = sender as Button;
             if (code == "0000")
@@ -263,33 +234,28 @@ namespace SchoolEnglish
             }
         }
 
-        //private void btnExitAdmin_Click(object sender, RoutedEventArgs e)
-        //{
-        //    MessageBoxResult k = MessageBox.Show("Вы действительно хотите выйти из режима администратора?", "Системное сообщение", MessageBoxButton.YesNo, MessageBoxImage.Question);
-        //    if (k == MessageBoxResult.Yes)
-        //    {
-        //        MessageBox.Show("Режим администратора выключен");
-        //        ClassFrame.MainFrame.Navigate(new Pages.ListOfService());
-        //        Admin.Visibility = Visibility.Visible;
-        //        ExitAdmin.Visibility = Visibility.Collapsed;
-        //        Add.Visibility = Visibility.Collapsed;
-        //        Zapis.Visibility = Visibility.Collapsed;
-        //        code = "00";
-        //    }
-        //}
-
-        private void btnExitAdmin_Loaded(object sender, RoutedEventArgs e)
+        private void btn_ExitAdmin_Loaded(object sender, RoutedEventArgs e)
         {
-            Button button = sender as Button;
+            Button butExitAdmin = sender as Button;
             if (code == "0000")
             {
-                button.Visibility = Visibility.Visible;
+                butExitAdmin.Visibility = Visibility.Visible;
             }
             else
             {
 
-                button.Visibility = Visibility.Collapsed;
+                butExitAdmin.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void btn_Add_Click(object sender, RoutedEventArgs e)
+        {
+            //ClassFrame.fr.Navigate(new AddService());
+        }
+
+        private void btn_RegSer_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

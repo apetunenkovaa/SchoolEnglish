@@ -23,6 +23,9 @@ namespace SchoolEnglish
         public MainWindow()
         {
             InitializeComponent();
+            ClassFrame.fr = frame_m;
+            DataBaseClass.SEBase = new Entities();
+            ClassFrame.fr.Navigate(new ListService());
         }
     }
 }

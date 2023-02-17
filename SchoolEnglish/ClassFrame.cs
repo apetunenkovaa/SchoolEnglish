@@ -9,6 +9,6 @@ namespace SchoolEnglish
 {
     class ClassFrame
     {
-        public static Frame MainFrame;
+        public static Frame fr;
     }
 }

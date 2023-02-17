@@ -23,7 +23,7 @@
             </StackPanel>
         </Grid>
 
-        <Frame Name="MainFrame" Grid.Row="1" NavigationUIVisibility="Hidden">
+        <Frame Name="frame_m" Grid.Row="1" NavigationUIVisibility="Hidden">
         </Frame>
     </Grid>
 </Window>

@@ -33,12 +33,12 @@
                 <TextBlock Text="Скидка"/>
             </StackPanel>
             <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" >
-                <ComboBox Name="cbPrice" SelectionChanged="cbPrice_SelectionChanged" Style ="{StaticResource cb}">
+                <ComboBox Name="cb_Price"  Style ="{StaticResource cb}" SelectionChanged="cb_Price_SelectionChanged">
                     <ComboBoxItem Content="Без сортировки"/>
                     <ComboBoxItem Content="По возрастанию"/>
                     <ComboBoxItem Content="По убыванию"/>
                 </ComboBox>
-                <ComboBox Name="cbFilter" SelectionChanged="cbFilter_SelectionChanged" Style ="{StaticResource cb}" >
+                <ComboBox Name="cb_Filter"  Style ="{StaticResource cb}" SelectionChanged="cb_Filter_SelectionChanged">
                     <ComboBoxItem Content="Все"/>
                     <ComboBoxItem Content="от 0 до 5%"/>
                     <ComboBoxItem Content="от 5 до 15%"/>
@@ -52,38 +52,38 @@
                 <TextBlock Text="Поиск по описанию"/>
             </StackPanel>
             <StackPanel Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" >
-                <TextBox Name="tbSearch" TextChanged="tbSearch_TextChanged" Style="{StaticResource text_b}"/>
-                <TextBox Name="tbSearchDescribe" TextChanged="tbSearchDes_TextChanged" Style="{StaticResource text_b}"/>
+                <TextBox Name="tb_Search" TextChanged="tb_Search_TextChanged" Style="{StaticResource text_b}"/>
+                <TextBox Name="tb_SearchDescribe" TextChanged="tb_SearchDescribe_TextChanged" Style="{StaticResource text_b}"/>
             </StackPanel>
             <StackPanel Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" >
-                <TextBlock Name="CountZapis"/>
+                <TextBlock Name="tb_CountZapis"/>
             </StackPanel>
             
         </Grid>
 
-        <ListView Name="LService" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+        <ListView Name="LVService" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border Padding="1" >
-                        <Grid Name="gridM" Background="{Binding ColorDisc}">
+                        <Grid Name="maingrd" Background="{Binding color}">
                             <StackPanel Margin="5" Orientation="Horizontal">
                                 <StackPanel>
                                     <Image Width="170" Height="170" Uid="{Binding ID}"/>
                                 </StackPanel>
                                 <DockPanel>
                                     <StackPanel DockPanel.Dock="Top">
-                                        <TextBlock Text="{Binding Title}" Name="txtHeader"/>
+                                        <TextBlock Text="{Binding Title}" Name="txt_Header"/>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Name="tbOldPrice" Uid="{Binding Discount}" Text="{Binding Cost, StringFormat='{}{0:0}\ '}" TextDecorations="Strikethrough" Loaded="tbOldPrice_Loaded"/>
+                                            <TextBlock Name="tb_OldPrice" Uid="{Binding Discount}" Text="{Binding Cost, StringFormat='{}{0:0}\ '}" TextDecorations="Strikethrough" Loaded="tb_OldPrice_Loaded"/>
                                             <TextBlock Text="{Binding Price, StringFormat={}{0} рублей}"/>
                                             <TextBlock Text="{Binding Time}"/>
                                         </StackPanel>
-                                        <TextBlock Name="tbSkidka" Uid="{Binding Discount}" Text="{Binding DiscountServ}" Margin="10" Loaded="tbSkidka_Loaded"/>
+                                        <TextBlock Name="tb_Discount" Uid="{Binding Discount}" Text="{Binding DiscountServ}" Margin="10" Loaded="tb_Discount_Loaded"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <Button Name="btnUpdate" Uid="{Binding ID}" Content="Редактировать" Loaded="btnUpdate_Loaded" Click="btnUpdate_Click" />
-                                        <Button Name="btnDelete" Uid="{Binding ID}" Content="Удалить" Loaded="btnDelete_Loaded" Click="btnDelete_Click" />
-                                        <Button Name="btnZapis" Uid="{Binding ID}" Content="Записаться на услугу" Loaded="btnZapis_Loaded" Click="btnZapis_Click" />
+                                        <Button Name="bt_Update" Uid="{Binding ID}" Content="Редактировать" Loaded="bt_Update_Loaded" Click="bt_Update_Click" />
+                                        <Button Name="bt_Delete" Uid="{Binding ID}" Content="Удалить" Loaded="bt_Delete_Loaded" Click="bt_Delete_Click" />
+                                        <Button Name="bt_Reg" Uid="{Binding ID}" Content="Записаться на услугу" Loaded="bt_Reg_Loaded" Click="bt_Reg_Click"   />
                                     </StackPanel>
                                 </DockPanel>
                             </StackPanel>
@@ -100,14 +100,14 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Margin="3">
-                <Button Name="Admin" Content="Режим администратора" Template="{StaticResource btn}" />
-                <Button Name="ExitAdmin" Visibility="Collapsed" Content="Выйти из режима" Template="{StaticResource btn}" />
+                <Button Name="btn_Admin" Content="Режим администратора" Template="{StaticResource btn}" Loaded="btn_Admin_Loaded"/>
+                <Button Name="btn_ExitAdmin" Visibility="Collapsed" Content="Выйти из режима" Template="{StaticResource btn}" Loaded="btn_ExitAdmin_Loaded"/>
             </StackPanel>
             <StackPanel Grid.Column="1" HorizontalAlignment="Center">
-                <Button Name="Add" Content="Добавить услугу" Template="{StaticResource btn}"/>
+                <Button Name="btn_Add" Content="Добавить услугу" Template="{StaticResource btn}" Click="btn_Add_Click"/>
             </StackPanel>
             <StackPanel Grid.Column="2" Margin="3">
-                <Button Name="Zapis" Content="Ближайшие записи" Template="{StaticResource btn}"/>
+                <Button Name="btn_RegSer" Content="Ближайшие записи" Template="{StaticResource btn}" Click="btn_RegSer_Click"/>
             </StackPanel>
         </Grid>
     </Grid>
